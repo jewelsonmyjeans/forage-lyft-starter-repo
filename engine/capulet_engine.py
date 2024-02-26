@@ -1,13 +1,35 @@
-from abc import ABC
-
-from car import Car
+from engines.engine_interface import Engine
 
 
-class CapuletEngine(Car, ABC):
-    def __init__(self, last_service_date, current_mileage, last_service_mileage):
-        super().__init__(last_service_date)
-        self.current_mileage = current_mileage
-        self.last_service_mileage = last_service_mileage
+class CapuletEngine(Engine):
+    """
+    Represents a Capulet engine that implements the Engine interface.
 
-    def engine_should_be_serviced(self):
-        return self.current_mileage - self.last_service_mileage > 30000
+    Args:
+        current_mileage (int): The current mileage of the engine.
+        last_service_mileage (int): The mileage when the engine was last
+            serviced.
+    """
+    SERVICE_LIMIT_MILEAGE = 30000
+
+    def __init__(self, current_mileage: int, last_service_mileage: int):
+        """
+        Initialize a CapuletEngine object.
+
+        Args:
+            current_mileage (int): The current mileage of the engine.
+            last_service_mileage (int): The mileage when the engine was last
+                serviced.
+        """
+        self.current_mileage: int = current_mileage
+        self.last_service_mileage: int = last_service_mileage
+
+    def needs_service(self) -> bool:
+        """
+        Determines if the Capulet engine needs servicing.
+
+        Returns:
+            bool: True if the engine needs servicing, False otherwise.
+        """
+        return (self.current_mileage - self.last_service_mileage >
+                CapuletEngine.SERVICE_LIMIT_MILEAGE)
